@@ -1,3 +1,4 @@
+'use strict';
 import axios from 'axios';
 export function getHistorical(stock, number) {
     return function(dispatch) {

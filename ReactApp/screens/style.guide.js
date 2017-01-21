@@ -58,6 +58,7 @@ class StyleGuide extends Component {
   }
 componentDidMount = async () => {
     let response = await AsyncStorage.getItem('pastStock');
+    
     if (response) {
       this.props.dispatch(getFund(response));
       this.props.dispatch(getHistorical(response, year));   

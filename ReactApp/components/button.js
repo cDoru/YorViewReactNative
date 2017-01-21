@@ -1,15 +1,5 @@
-/**
- * Button
- *
-    <Button 
-      text={text}
-      type={'outlined'}
-      size={'medium'}
-      disabled={false}
-      onPress={()=>{alert('Go To Entry View')}} />
- *
- * React Native Starter App
- * https://github.com/mcnamee/react-native-starter-app
+/*
+Button
  */
 'use strict';
 
