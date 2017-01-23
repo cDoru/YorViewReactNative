@@ -142,6 +142,7 @@ var styles = StyleSheet.create({
     height: 150,
     marginTop: 75,
     width: 150,
+    borderRadius: 75,
   },
   title: {
     fontSize: 45,
