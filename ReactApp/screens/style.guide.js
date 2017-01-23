@@ -36,7 +36,7 @@ import Loading from '../components/loading'
 //Actions
 import { getFund } from '../actions/fundamentalOneAct'
 import { getHistorical } from '../actions/getHistorical'
-import { trade,incr,decr } from '../actions/trade'
+import {incr,decr } from '../actions/trade'
 
 
 

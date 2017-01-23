@@ -5,6 +5,7 @@
 
 /* Setup ==================================================================== */
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   StyleSheet,
   View,
@@ -22,8 +23,14 @@ var lock = new Auth0Lock(credentials);
 
 import AppStyles from '../styles'
 
+import { addData } from '../actions/profile'
+
 import Button from '../components/button'
 import FirstLoad from './first.load'
+
+function mapStateToProps(state) {
+  return { profile: state.profileReducer };
+}
 
 class ComingSoon extends Component {
   static componentName = 'ComingSoon';
@@ -32,8 +39,8 @@ class ComingSoon extends Component {
     super(props);
 
     this.state = {
-      loggedIn: false,
-      splashScreenVisible: this.props.showSplashScreen || false,
+    loggedIn: false,
+    splashScreenVisible: this.props.showSplashScreen || false,
     selected1: 'key1',
     selected2: 'key1',
     selected3: 'key1',
@@ -56,9 +63,13 @@ class ComingSoon extends Component {
         console.log(err);
         return;
       }
+
+     
+        this.props.dispatch(addData(profile));
         this.setState({'loggedIn': true});
     });
   }
+
   _navigate = (navbarTitle) => {
     this.props.navigator.push({
       title: navbarTitle,
@@ -95,11 +106,50 @@ class ComingSoon extends Component {
     else if (this.state.loggedIn === true) {
       return (
       <View style={[AppStyles.container], [AppStyles.paddingHorizontal], {margin: 40}}>      
-        <Text> Great </Text>         
+        
+          
+          <Image
+            style={styles.avatar}
+            source={{uri: (this.props.profile.profile.userId).substring(0,1) == 'f' ? "https://graph.facebook.com/"+(this.props.profile.profile.userId).replace('facebook|','') +"/picture?width=9999" : this.props.profile.profile.picture}}
+          />
+          <Text style={styles.title}>{(this.props.profile.profile.name).includes('@') ? 'Welcome!' : "Welcome, " +(this.props.profile.profile.name).split(' ')[0]+"!"}</Text>
+     
+      
+
+      
       </View>
     )}
   }
 }
-
+var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#15204C',
+  },
+  messageBox: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  badge: {
+    alignSelf: 'center',
+    height: 110,
+    width: 102,
+    marginBottom: 80,
+  },
+  avatar: {
+    alignSelf: 'center',
+    height: 150,
+    marginTop: 75,
+    width: 150,
+  },
+  title: {
+    fontSize: 45,
+    textAlign: 'center',
+    marginTop: 20,
+    color: '#000000',
+  },
+});
 /* Export Component ==================================================================== */
-export default ComingSoon
+export default connect(mapStateToProps)(ComingSoon)
+

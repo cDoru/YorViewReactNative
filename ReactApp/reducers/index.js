@@ -11,6 +11,7 @@ import sideMenu from './sidemenu'
 import getFund from './fundamentalOneRed'
 import getHis from './getHistoricalReducer'
 import tradeReducer from './tradeReducer'
+import profileReducer from './profileReducer'
 
 // Combine all
 const appReducer = combineReducers({
@@ -18,6 +19,7 @@ const appReducer = combineReducers({
   getFund,
   getHis,
   tradeReducer,
+  profileReducer,
 });
 
 // Setup root reducer
