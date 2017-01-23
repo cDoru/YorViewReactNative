@@ -94,7 +94,7 @@ class ComingSoon extends Component {
     * RENDER
     */
   render = () => {
-    if (!this.state.loggedIn) {
+    if (!this.props.profile.profile.userId) {
     return (
       <View style={[AppStyles.container], [AppStyles.paddingHorizontal], {margin: 40}}>      
         <Button
@@ -103,7 +103,7 @@ class ComingSoon extends Component {
                 onPress={this._login} />            
       </View>
     )}
-    else if (this.state.loggedIn === true) {
+    else if (this.props.profile.profile.userId !== undefined) {
       return (
       <View style={[AppStyles.container], [AppStyles.paddingHorizontal], {margin: 40}}>      
         

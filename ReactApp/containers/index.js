@@ -11,6 +11,7 @@ import { applyMiddleware, compose, createStore } from 'redux'
 import { Provider } from 'react-redux'
 import logger from 'redux-logger'
 import thunk from 'redux-thunk'
+import { composeWithDevTools } from './redux-devtools-extension';
 
 import App from './app'
 
@@ -22,18 +23,17 @@ let middleware = [
   thunk, // Allows action creators to return functions (not just plain objects)
 ];
 
-if (__DEV__) {
-  // Dev-only middleware
-  middleware = [
-    ...middleware,
-    logger(), // Logs state changes to the dev console
-  ];
-}
 
 // Init redux store (using the given reducer & middleware)
-const store = compose(
+
+
+const composeEnhancers = composeWithDevTools({
+  // Specify here name, actionsBlacklist, actionsCreators and other options
+  rootReducer
+});
+const store = createStore(rootReducer, composeEnhancers(
   applyMiddleware(...middleware)
-)(createStore)(rootReducer);
+));
 
 // Wrap App in Redux provider (makes Redux available to all sub-components)
 export default class AppContainer extends Component {
