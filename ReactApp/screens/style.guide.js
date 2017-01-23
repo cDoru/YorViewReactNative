@@ -18,6 +18,8 @@ import {
   AsyncStorage,
 } from 'react-native'
 
+
+
 import {StockLine} from 'react-native-pathjs-charts'
 import sampleData from './data'
 
@@ -44,6 +46,7 @@ function mapStateToProps(state) {
 const Stock = require('paths-js/stock')
 
 const year = 365
+
 /* Component ==================================================================== */
 class StyleGuide extends Component {
 	static componentName = 'StyleGuide';
@@ -69,7 +72,11 @@ componentDidMount = async () => {
 
   }
 }
+  _navigate = () => {
+    this.props.close();
 
+    
+  }
  _changeAmount = () => {
     let adding = Math.round(this.state.font) * this.props.getFund.stocks.data.quotes.quote.last - 0.95;
     this.props.dispatch(incr(adding)); 
@@ -80,6 +87,7 @@ componentDidMount = async () => {
     this.props.dispatch(decr(subtract));
     Alert.alert("You have bought " +this.state.font +" stocks for $" +subtract.toFixed(2));
   }
+
 
 getNewData () {
   var stock = this.state.text.trim();
@@ -92,6 +100,7 @@ getNewData () {
 }
 
    render() {
+
     const stockLine = <StockLine data={this.props.getHis.past.history ? [this.props.getHis.past.history] : sampleData.stockLine.data} options={sampleData.stockLine.options} xKey='x' yKey='y' />
     if (!this.props.getFund.stocks.data) {
       return (
@@ -127,8 +136,10 @@ getNewData () {
     }
     else {
     return (
+
       <ScrollView style={{flex:1,backgroundColor:'#F5FCFF'}}          
                   contentContainerStyle={{justifyContent:'center',alignItems:'center'}}>
+                
       <View style={[AppStyles.containerCentered]}>
         <TextInput
           ref="1"

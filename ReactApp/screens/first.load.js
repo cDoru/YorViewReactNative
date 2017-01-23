@@ -16,6 +16,11 @@ import {
   StatusBar,
 } from 'react-native'
 
+
+import Auth0Lock from 'react-native-lock';
+var credentials = require('./credentials/auth0-credentials');
+var lock = new Auth0Lock(credentials);
+
 // App Globals
 import AppStyles from '../styles'
 import AppConfig from '../config'
@@ -25,6 +30,7 @@ import Button from '../components/button'
 
 // Screens
 import StyleGuide from './style.guide'
+import Home from './soon'
 
 /* Component ==================================================================== */
 class FirstLoad extends Component {
@@ -42,11 +48,24 @@ class FirstLoad extends Component {
     this.props.close();
 
 	  this.props.navigator.push({
-	    title: 'Sign Up',
-	    component: StyleGuide,
-	    index: 2,
+	    title: 'Home',
+	    component: Home,
+	    index: 1,
 	  });
 	}
+
+  _onLogin = () => {
+
+    lock.show({
+      closable: true,
+    }, (err, profile, token) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+        
+    });
+  }
 
   /**
     * RENDER
@@ -56,24 +75,17 @@ class FirstLoad extends Component {
       <View style={[AppStyles.container, styles.containerCover]}>
       	<View style={[AppStyles.paddingHorizontal]}>
           <Text style={[AppStyles.baseText, AppStyles.p, AppStyles.centered]}>
-            Sign Up Now!
+            Welcome to YorView!
           </Text>
 
           <View style={[AppStyles.spacer_10]} />
 
           <View style={[AppStyles.row]}>
-          	<View style={[AppStyles.flex1, AppStyles.paddingRightSml]}>
-		          <Button
-		            text={'Sign In/Up Now'}
-		            onPress={()=>this._navigate()} />
-            </View>
-
-            <View style={[AppStyles.flex1, AppStyles.paddingLeftSml]}>
-		          <Button
-		            text={'Skip'}
-		            type={'outlined'}
-		            onPress={this.props.close} />
-        		</View>
+          	 <Button
+                text={'Login'}
+                type={'outlined'}
+                onPress={this._navigate} />
+            
       		</View>
       	</View>
       </View>
@@ -84,7 +96,7 @@ class FirstLoad extends Component {
 /* Styles ==================================================================== */
 const styles = StyleSheet.create({
 	containerCover: {
-		marginTop: -AppConfig.navbarHeight,
+		marginTop: AppConfig.navbarHeight,
 		backgroundColor: "#FFF",
 		justifyContent: 'center',
 	},

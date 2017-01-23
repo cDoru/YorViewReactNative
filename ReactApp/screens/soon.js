@@ -16,6 +16,9 @@ import {
   Item,
 } from 'react-native'
 
+import Auth0Lock from 'react-native-lock';
+var credentials = require('./credentials/auth0-credentials');
+var lock = new Auth0Lock(credentials);
 
 import AppStyles from '../styles'
 
@@ -29,6 +32,7 @@ class ComingSoon extends Component {
     super(props);
 
     this.state = {
+      loggedIn: false,
       splashScreenVisible: this.props.showSplashScreen || false,
     selected1: 'key1',
     selected2: 'key1',
@@ -45,6 +49,16 @@ class ComingSoon extends Component {
   /**
     * Navigates to same scene (for Demo purposes)
     */
+    _login = () => {
+    lock.show({
+    }, (err, profile, token) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+        this.setState({'loggedIn': true});
+    });
+  }
   _navigate = (navbarTitle) => {
     this.props.navigator.push({
       title: navbarTitle,
@@ -69,37 +83,21 @@ class ComingSoon extends Component {
     * RENDER
     */
   render = () => {
-    let header = 'My Portfolio'
-    let subHeader = 'Yorview: Knowledge is a Journey'
-    let directions = 'The World of Finance is changing. More people are now entrusting their savings to automated systems. '
-    let motto = 'We believe that the best strategy combines three things: personalized service, reasonable autonomy, and cutting edge computational techniques.'
-    // Done
+    if (!this.state.loggedIn) {
     return (
-      <View style={[AppStyles.container], [AppStyles.paddingHorizontal], {margin: 20}}>
-        <Text style={[AppStyles.h1]}>
-          {header}
-        </Text>    
-        <Text style={[AppStyles.h2], {color: '#666666'}}>
-            {subHeader}
-        </Text>
-        <View style={[AppStyles.spacer_25]}>
-          <Text style={[AppStyles.p], [AppStyles.paddingHorizontal], {color: 'black'}}>
-            {directions}
-        </Text>
-        <View style={[AppStyles.spacer_15]} />
-        <Text style={[AppStyles.p], [AppStyles.paddingHorizontal], {color: 'black'}}>
-            {motto}           
-        </Text>        
-        </View>
-        <Modal animationType={'fade'}
-          transparent={false}
-          visible={this.state.splashScreenVisible}
-          onRequestClose={()=>{}}>
-          <FirstLoad navigator={this.props.navigator}
-            close={this.onSplashSkip} />
-        </Modal>
+      <View style={[AppStyles.container], [AppStyles.paddingHorizontal], {margin: 40}}>      
+        <Button
+                text={'Login'}
+                type={'outlined'}
+                onPress={this._login} />            
       </View>
-    );
+    )}
+    else if (this.state.loggedIn === true) {
+      return (
+      <View style={[AppStyles.container], [AppStyles.paddingHorizontal], {margin: 40}}>      
+        <Text> Great </Text>         
+      </View>
+    )}
   }
 }
 

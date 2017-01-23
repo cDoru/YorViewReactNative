@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "5E3AB341B50510AAB27A34D69D4F2D88C413A81B",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "5E3AB341B50510AAB27A34D69D4F2D88C413A81B" : 9223372036854775807,
+    "565DC9CE9164CA08DBBA0E85732F84472A7D82BF" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "94AA3C5C-84D2-4452-A416-40249B7C2D6F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "5E3AB341B50510AAB27A34D69D4F2D88C413A81B" : "YorView\/",
+    "565DC9CE9164CA08DBBA0E85732F84472A7D82BF" : "YorView\/node_modules\/react-native\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "StarterKit",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ios\/StarterKit.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:weatherfordmat\/YorView2.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "565DC9CE9164CA08DBBA0E85732F84472A7D82BF"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:weatherfordmat\/YorViewReactNative.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5E3AB341B50510AAB27A34D69D4F2D88C413A81B"
+    }
+  ]
+}
