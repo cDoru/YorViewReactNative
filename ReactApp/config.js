@@ -14,7 +14,7 @@ exports.title = 'GlobalConfig';
 
 export default {
 	// App Details
-	appName: 'YorVue',
+	appName: 'YorView',
 
 	// Window Dimensions
 	windowHeight: window.height,

@@ -22,10 +22,10 @@ import AppConfig from '../config'
 
 // // Screens
 import StyleGuide from '../screens/style.guide'
-import ComingSoon from '../screens/soon'               // **
-import FormExample from '../screens/forms'             // **
-import ListViewExample from '../screens/listview'      // **
-import Tabs from '../screens/tabs'                     // **
+import ComingSoon from '../screens/soon'              
+import FormExample from '../screens/forms'             
+import ListViewExample from '../screens/listview'      
+import Tabs from '../screens/tabs'                     
 
 const {
   Surface,
@@ -39,12 +39,12 @@ class Menu extends Component {
     // Initial state
     this.state = {
       menu: [
-        {title: 'Home', component: ComingSoon, props: {passProps: {placeholder: 'Hey there, you passProps bro?'}}},
         {title: 'Research', component: StyleGuide},
-        {title: 'Filters', component: Tabs}, 
-        {title: 'Find Filters', component: ListViewExample},
+        {title: 'Portfolio', component: Tabs}, 
+        {title: 'Tips', component: ListViewExample},
         {title: 'Login', component: FormExample},
-        {title: 'Settings', component: ListViewExample, props: {passProps: {noImages: true}}},
+        {title: 'Connect', component: ListViewExample, props: {passProps: {noImages: true}}},
+        {title: 'My Settings', component: ComingSoon, props: {passProps: {placeholder: 'Hey there, you passProps bro?'}}},
       ],
     };
   }

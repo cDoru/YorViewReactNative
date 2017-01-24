@@ -62,8 +62,16 @@ const styles = StyleSheet.create({
     top: 4,
   },
   navbarTitle: {
-    color: '#FFFFFF',
+    color: '#FFF',
     bottom: 6,
-    fontSize: 13,
+    fontSize: 25,
+    top: 7,
+    fontWeight: '400',
+    fontFamily: 'Thonburi',
   },
 });
+
+
+
+
+

@@ -1,8 +1,4 @@
-/**
- * App - set all the things up
- *
- * React Native Starter App
- * https://github.com/mcnamee/react-native-starter-app
+/*
  */
 'use strict';
 
@@ -14,11 +10,26 @@ import {
   View,
   TouchableOpacity,
   Image,
+  Alert,
   StatusBar,
 } from 'react-native'
 import { connect } from 'react-redux'
 import NavigationBar from 'react-native-navbar'
 import SideMenu from 'react-native-side-menu'
+
+//better than Async Storage;
+var Realm = require('realm');
+
+const User = {
+  name: 'User',
+  properties: {
+    userId: 'string',
+    name: 'string',
+
+  }
+};
+let realm = new Realm({schema: [User]});
+
 
 // Actions
 import * as SideMenuActions from '../actions/sidemenu'
@@ -48,6 +59,23 @@ class AppContainer extends Component {
     // Status Bar
     StatusBar.setHidden(false); // Slide in on load
     //StatusBar.setBackgroundColor(AppConfig.primaryColor, true); // Android Status Bar Color
+    //now add our user to realm  
+    if (this.props.profile.profile.userId) {
+    //we will put Realm Here!
+    let users = realm.objects('User');
+    let theirName = this.props.profile.profile.name
+    let theirUserId = this.props.profile.profile.userId
+    realm.write(() => {
+        realm.create('User', {
+            userId: theirUserId,
+            name: theirName
+        });
+        let users = realm.objects('User');
+        //realm.delete(users);
+        console.log("There are " + users.length + " users.")
+    });
+    console.log(users.slice(0, 5));
+}
   }
 
   /**
@@ -82,7 +110,7 @@ class AppContainer extends Component {
     */
   _renderScene = (route, navigator) => {
     // Default Navbar Title
-    let title = route.title || AppConfig.appName;
+    let title = route.title || "My Profile";
 
     // Google Analytics
     let screenName = route.component.componentName ? route.component.componentName + ' - ' + title : title;
@@ -107,8 +135,8 @@ class AppContainer extends Component {
       <View style={[AppStyles.appContainer, AppStyles.container]}>
         <NavigationBar
           title={<NavbarElements.Title title={title || null} />}
-          statusBar={{style: 'light-content', hidden: false}}
-          style={[AppStyles.navbar]}
+          statusBar={!this.props.profile.profile.userId ? {style: 'light-content', hidden: true} : {style: 'light-content', hidden: false}}
+          style={!this.props.profile.profile.userId ? {backgroundColor: '#FFF'} : {}}
           tintColor={AppConfig.primaryColor}
           leftButton={<NavbarElements.LeftButton onPress={leftButton.onPress} icon={leftButton.icon} />} />
 
@@ -116,11 +144,9 @@ class AppContainer extends Component {
       </View>
     );
   }
-
-  /**
-    * RENDER
-    */
   render() {
+
+
     return (
       <SideMenu
         ref="rootSidebarMenu"
@@ -156,6 +182,7 @@ class AppContainer extends Component {
 // Define which part of the state we're passing to this component
 const mapStateToProps = (state) => ({
   sideMenuIsOpen: state.sideMenu.isOpen,
+  profile: state.profileReducer,
 });
 
 // Define the actions this component may dispatch

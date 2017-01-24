@@ -23,6 +23,18 @@ var lock = new Auth0Lock(credentials);
 
 import AppStyles from '../styles'
 
+var Realm = require('realm');
+
+
+const User = {
+  name: 'User',
+  properties: {
+    userId: 'string',
+    name: 'string',
+
+  }
+};
+let realm = new Realm({schema: [User]});
 import { addData } from '../actions/profile'
 
 import Button from '../components/button'
@@ -63,10 +75,33 @@ class ComingSoon extends Component {
         console.log(err);
         return;
       }
-
-     
+      //we will put Realm Here!     
         this.props.dispatch(addData(profile));
         this.setState({'loggedIn': true});
+    let users = realm.objects('User');
+    let theirName = this.props.profile.profile.name
+    let theirUserId = this.props.profile.profile.userId
+    let beenHereBefore = users.filtered("name CONTAINS[c] $0", theirName);
+    let pastUser = JSON.stringify(beenHereBefore).length;
+    if (pastUser <= 0) {
+    realm.write(() => {
+        realm.create('User', {
+            userId: theirUserId,
+            name: theirName
+        });
+        //realm.delete(users);
+        console.log("There are " + users.length + " users.")
+    });
+  }
+  else {
+    console.log("Welcome Back!")
+  }
+    console.log(users.slice(0, 5));
+
+
+
+
+
     });
   }
 
@@ -96,7 +131,7 @@ class ComingSoon extends Component {
   render = () => {
     if (!this.props.profile.profile.userId) {
     return (
-      <View style={[AppStyles.container], [AppStyles.paddingHorizontal], {margin: 40}}>      
+      <View style={[AppStyles.container], [AppStyles.paddingHorizontal], {margin: 100}}>      
         <Button
                 text={'Login'}
                 type={'outlined'}

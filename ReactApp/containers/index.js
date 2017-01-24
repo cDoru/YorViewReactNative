@@ -1,9 +1,4 @@
-/**
- * Index - this is where everything
- *  starts - but offloads to app.js
- *
- * React Native Starter App
- * https://github.com/mcnamee/react-native-starter-app
+/*
  */
 
 import React, { Component } from 'react'
