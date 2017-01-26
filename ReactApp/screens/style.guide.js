@@ -4,7 +4,7 @@ The Biggest Component. . .
 1) needs to be split into smaller parts;
 2) need to fix graph data;
  */
-'use strict';
+
  
 /* Setup ==================================================================== */
 import React, { Component, PropTypes } from 'react'
@@ -67,7 +67,52 @@ const StockSchema = {
 };
 
 const realm2 = new Realm({schema: [FinanceSchema, StockSchema, PersonSchema]});
+const stock = realm2.objects('Stock');
+const stockList = stock[0].stocks;
 
+import axios from 'axios';
+
+//[['aapl', 10],['tsla', 100], ['f', 1200], ['tsla',-50]];
+function getTotalValue(arrStocks) {
+    var len = arrStocks.length;
+    values = []; 
+    for (var i = 0; i < len; i++) {  
+    arr = [];
+    function requestIt(i) {    
+         var amount = parseFloat(arrStocks[i].amount);
+        axios.get('https://yorview.herokuapp.com/api/fundamentals/' + arrStocks[i].name).then(function(data) {
+            arr.push(data.data.data.quotes.quote.last*amount);
+            if (arr.length === arrStocks.length) {
+                console.log(arr);
+                var sum = arr.reduce(function(a,b) {return a + b});
+                console.log(sum);
+            }
+        });
+
+
+    }
+    requestIt(i);
+}
+
+}
+
+function addStockToRealm(name2, amount2) {
+  let number = Number(amount2);
+  realm2.write(() => {
+      let result = stockList.push({name: name2, amount: number});
+  });
+  getTotalValue(stockList);
+}
+
+function subtractStockFromRealm(name2, amount2) {
+  let number = Number(amount2) * -1;
+  realm2.write(() => {
+      let result = stockList.push({name: name2, amount: number});
+  });
+  
+  getTotalValue(stockList);
+
+}
 
 function mapStateToProps(state) {
   return { trade: state.tradeReducer, profile: state.profileReducer, getFund: state.getFund, getHis: state.getHis };
@@ -88,16 +133,8 @@ class StyleGuide extends Component {
       getHis: 'loading',
       chartDone: false,
     }
-   let stock = realm2.objects('Stock');
-   let stockList = stock[0].stocks;
-    realm2.write(() => {
-      let result = stockList.push({name: 'aapl', amount: 100});
-      console.log(stock);
-    })
-
   }
 componentDidMount = async () => { 
-
     let response = await AsyncStorage.getItem('pastStock');
     if (response) {
       
@@ -114,11 +151,14 @@ componentDidMount = async () => {
     this.props.close();   
   }
  _changeAmount = () => {
+    subtractStockFromRealm(this.props.getFund.stocks.data.quotes.quote.symbol, this.state.font)
     let adding = Math.round(this.state.font) * this.props.getFund.stocks.data.quotes.quote.last - 0.95;
     this.props.dispatch(incr(adding)); 
     Alert.alert("You have sold " +this.state.font +" stocks for $" +adding.toFixed(2));
   }
   _delAmount = () => {
+
+    addStockToRealm(this.props.getFund.stocks.data.quotes.quote.symbol, this.state.font);
     let subtract = Math.round(this.state.font) * this.props.getFund.stocks.data.quotes.quote.last + 0.95;
     this.props.dispatch(decr(subtract));
     Alert.alert("You have bought " +this.state.font +" stocks for $" +subtract.toFixed(2));
