@@ -2,7 +2,7 @@
 import axios from 'axios';
 export function getFund(stock) {
     return function(dispatch) {
-        axios.get('http://localhost:8080/api/fundamentals/' + stock)
+        axios.get('https://yorview.herokuapp.com/api/fundamentals/' + stock)
         .then((response) => {
             dispatch({
                 type: "FETCH_STOCK_FULFILLED",

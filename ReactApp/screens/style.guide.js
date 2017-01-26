@@ -1,5 +1,8 @@
 /*
-Place to research stocks
+The Biggest Component. . .
+
+1) needs to be split into smaller parts;
+2) need to fix graph data;
  */
 'use strict';
  
@@ -18,8 +21,6 @@ import {
   AsyncStorage,
 } from 'react-native'
 
-
-
 import {StockLine} from 'react-native-pathjs-charts'
 import sampleData from './data'
 
@@ -36,12 +37,40 @@ import Loading from '../components/loading'
 //Actions
 import { getFund } from '../actions/fundamentalOneAct'
 import { getHistorical } from '../actions/getHistorical'
-import {incr,decr } from '../actions/trade'
+import {incr, decr} from '../actions/trade'
 
+const Realm = require('realm');
+const PersonSchema = {
+  name: 'Person',
+  primaryKey: 'userId',
+  properties: {
+    userId:  'string',
+    name: 'string',
+    notifications: {type: 'bool', default: false},
+    public: {type: 'bool', default: false},
+    pro: {type: 'bool', default: false}
+  }
+};
+const FinanceSchema = {
+  name: 'Finance',
+  properties: {
+      name: 'string',
+      amount: 'int'
+  }
+};
+const StockSchema = {
+  name: 'Stock',
+  properties: {
+      cash: 'int',
+      stocks: {type: 'list', objectType: 'Finance'}
+  }
+};
+
+const realm2 = new Realm({schema: [FinanceSchema, StockSchema, PersonSchema]});
 
 
 function mapStateToProps(state) {
-  return { trade: state.tradeReducer, getFund: state.getFund, getHis: state.getHis };
+  return { trade: state.tradeReducer, profile: state.profileReducer, getFund: state.getFund, getHis: state.getHis };
 }
 const Stock = require('paths-js/stock')
 
@@ -52,30 +81,37 @@ class StyleGuide extends Component {
 	static componentName = 'StyleGuide';
 	constructor(props) {
     super(props);
+     
     this.state = {
     	text: '',
       getFund: 'loading',
       getHis: 'loading',
       chartDone: false,
     }
+   let stock = realm2.objects('Stock');
+   let stockList = stock[0].stocks;
+    realm2.write(() => {
+      let result = stockList.push({name: 'aapl', amount: 100});
+      console.log(stock);
+    })
+
   }
-componentDidMount = async () => {
+componentDidMount = async () => { 
+
     let response = await AsyncStorage.getItem('pastStock');
-    
     if (response) {
+      
       this.props.dispatch(getFund(response));
-      this.props.dispatch(getHistorical(response, year));   
+      this.props.dispatch(getHistorical(response, year));
+
     }
     else {
     this.props.dispatch(getFund('aapl'));
     this.props.dispatch(getHistorical('aapl', year));
-
   }
 }
   _navigate = () => {
-    this.props.close();
-
-    
+    this.props.close();   
   }
  _changeAmount = () => {
     let adding = Math.round(this.state.font) * this.props.getFund.stocks.data.quotes.quote.last - 0.95;

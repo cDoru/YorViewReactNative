@@ -2,7 +2,7 @@
 import axios from 'axios';
 export function getHistorical(stock, number) {
     return function(dispatch) {
-        let url = "http://localhost:8080/api/historical/" +stock +"/" +number
+        let url = "https://yorview.herokuapp.com/api/historical/" +stock +"/" +number
         axios.get(url)
         .then((response) => {
             dispatch({

@@ -1,6 +1,3 @@
-/*
- Becomes Home Component
- */
 'use strict';
 
 /* Setup ==================================================================== */
@@ -14,27 +11,34 @@ import {
   Modal,
   Image,
   Picker,
+  Switch,
   Item,
 } from 'react-native'
 
+//auth0 imports
 import Auth0Lock from 'react-native-lock';
-var credentials = require('./credentials/auth0-credentials');
-var lock = new Auth0Lock(credentials);
+import credentials from './credentials/auth0-credentials';
+const lock = new Auth0Lock(credentials);
 
 import AppStyles from '../styles'
 
-var Realm = require('realm');
 
-
-const User = {
-  name: 'User',
+//realm
+const Realm = require('realm');
+const PersonSchema = {
+  name: 'Person',
+  primaryKey: 'userId',
   properties: {
-    userId: 'string',
+    userId:  'string',
     name: 'string',
-
+    notifications: {type: 'bool', default: false},
+    public: {type: 'bool', default: false},
+    pro: {type: 'bool', default: false}
   }
 };
-let realm = new Realm({schema: [User]});
+let realm = new Realm({schema: [PersonSchema]});
+
+
 import { addData } from '../actions/profile'
 
 import Button from '../components/button'
@@ -53,9 +57,6 @@ class ComingSoon extends Component {
     this.state = {
     loggedIn: false,
     splashScreenVisible: this.props.showSplashScreen || false,
-    selected1: 'key1',
-    selected2: 'key1',
-    selected3: 'key1',
     }
   }
 
@@ -65,9 +66,6 @@ class ComingSoon extends Component {
     placeholder: React.PropTypes.string,
   }
 
-  /**
-    * Navigates to same scene (for Demo purposes)
-    */
     _login = () => {
     lock.show({
     }, (err, profile, token) => {
@@ -78,33 +76,28 @@ class ComingSoon extends Component {
       //we will put Realm Here!     
         this.props.dispatch(addData(profile));
         this.setState({'loggedIn': true});
-    let users = realm.objects('User');
-    let theirName = this.props.profile.profile.name
-    let theirUserId = this.props.profile.profile.userId
-    let beenHereBefore = users.filtered("name CONTAINS[c] $0", theirName);
-    let pastUser = JSON.stringify(beenHereBefore).length;
-    if (pastUser <= 0) {
-    realm.write(() => {
-        realm.create('User', {
-            userId: theirUserId,
-            name: theirName
+        const users = realm.objects('Person');
+        console.log("There are " +users.length +" many users right now on this phone.");
+        let thisUser = users.filtered('userId CONTAINS[c] $0', this.props.profile.profile.userId);
+        if (thisUser.length) { 
+            console.log(thisUser[0].name +" is logged in.");
+            if (thisUser[0].public === true) {
+              this.setState({publicSwitch: true})
+            }
+            if (thisUser[0].notifications === true) {
+              this.setState({notifySwitch: true})
+            }
+    
+        } else {
+          realm.write(() => {
+            realm.create('Person', {userId: this.props.profile.profile.userId, name: this.props.profile.profile.name, notifications: false, public: false, pro: false});
+            console.log("Created User!");
         });
-        //realm.delete(users);
-        console.log("There are " + users.length + " users.")
+
+        }
+       
     });
   }
-  else {
-    console.log("Welcome Back!")
-  }
-    console.log(users.slice(0, 5));
-
-
-
-
-
-    });
-  }
-
   _navigate = (navbarTitle) => {
     this.props.navigator.push({
       title: navbarTitle,
@@ -112,6 +105,8 @@ class ComingSoon extends Component {
       index: 2
     });
   }
+
+
 
   /**
     * Splash Screen - Skip
@@ -124,6 +119,25 @@ class ComingSoon extends Component {
     newState[key] = value;
     this.setState(newState);
   };
+  _changePublic = (value) => {
+    const users = realm.objects('Person');
+    let thisUser = users.filtered('userId CONTAINS[c] $0', this.props.profile.profile.userId);
+    realm.write(() => {
+ thisUser[0].public = value;
+});
+    
+    this.setState({publicSwitch: value})
+  }
+  _changeNotifications = (value) => {
+    const users = realm.objects('Person');
+    let thisUser = users.filtered('userId CONTAINS[c] $0', this.props.profile.profile.userId);
+    realm.write(() => {
+ thisUser[0].notifications = value;
+});
+    
+    this.setState({notifySwitch: value})
+  }
+ 
 
   /**
     * RENDER
@@ -148,9 +162,28 @@ class ComingSoon extends Component {
             source={{uri: (this.props.profile.profile.userId).substring(0,1) == 'f' ? "https://graph.facebook.com/"+(this.props.profile.profile.userId).replace('facebook|','') +"/picture?width=9999" : this.props.profile.profile.picture}}
           />
           <Text style={styles.title}>{(this.props.profile.profile.name).includes('@') ? 'Welcome!' : "Welcome, " +(this.props.profile.profile.name).split(' ')[0]+"!"}</Text>
-     
+     <View style={[AppStyles.paddingVertical]}></View>
+      <View style={[AppStyles.containerCentered]}>
+      <View style={[AppStyles.row]}>
       
-
+      <Text style={styles.options}> Notifications</Text>
+      <View style={[AppStyles.paddingHorizontal]}></View>
+        <Switch
+          onValueChange={this._changeNotifications} 
+          value={this.state.notifySwitch} />
+          </View>
+          <View style={[AppStyles.paddingVertical]}></View>
+          <View style={[AppStyles.row]}>
+          <Text style={styles.options}>Public Profile </Text>
+          <View style={[AppStyles.paddingHorizontal]}></View>
+        <Switch
+          onValueChange={this._changePublic}
+          value={this.state.publicSwitch} />
+          </View>
+      </View>
+      <View style={[AppStyles.hr]}></View>
+      <Text style={styles.options2}> Upgrade to a Full Membership! 99 &cent;</Text>
+  
       
       </View>
     )}
@@ -175,16 +208,26 @@ var styles = StyleSheet.create({
   avatar: {
     alignSelf: 'center',
     height: 150,
-    marginTop: 75,
+    marginTop: 45,
     width: 150,
     borderRadius: 75,
   },
   title: {
     fontSize: 45,
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: 15,
     color: '#000000',
   },
+  options: {
+    fontSize: 17,
+    textAlign: 'center',
+    color: '#7F7F7F',
+  },
+  options2: {
+    fontSize: 14,
+    textAlign: 'center',
+    color: '#B3B3B3',
+  }
 });
 /* Export Component ==================================================================== */
 export default connect(mapStateToProps)(ComingSoon)
