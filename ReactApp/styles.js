@@ -1,8 +1,5 @@
-/**
- * Global App Styles
- *
- * React Native Starter App
- * https://github.com/mcnamee/react-native-starter-app
+/*
+Styles for the entire app;
  */
 'use strict';
 
@@ -91,9 +88,9 @@ module.exports = StyleSheet.create({
   },
   h4: {
     fontFamily: AppConfig.baseFont,
-    fontWeight: '800',
+    fontWeight: '600',
     color: AppConfig.primaryColor,
-    fontSize: AppConfig.baseFontSize * 1.1,
+    fontSize: AppConfig.baseFontSize * 1.05,
     lineHeight: parseInt((AppConfig.baseFontSize * 1.1) + (AppConfig.baseFontSize * 0.5)),
     margin: 0,
     marginTop: 4,

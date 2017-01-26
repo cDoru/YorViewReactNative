@@ -1,12 +1,7 @@
-/**
- * Tabs
- *
- * React Native Starter App
- * https://github.com/mcnamee/react-native-starter-app
+/*
+Portfolio
  */
 'use strict';
- 
-/* Setup ==================================================================== */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -61,9 +56,6 @@ class Tabs extends Component {
     };
   }
 
-  /**
-    * Executes after all modules have been loaded
-    */
   componentDidMount = () => {
     InteractionManager.runAfterInteractions(() => {
       this.setState({ loading: false });

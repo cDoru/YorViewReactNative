@@ -40,10 +40,10 @@ class Menu extends Component {
     this.state = {
       menu: [
         {title: 'Research', component: StyleGuide},
-        {title: 'Portfolio', component: Tabs}, 
+        {title: 'Connect', component: Tabs}, 
         {title: 'Tips', component: ListViewExample},
         {title: 'Login', component: FormExample},
-        {title: 'Connect', component: ListViewExample, props: {passProps: {noImages: true}}},
+        {title: 'Portfolio', component: ListViewExample, props: {passProps: {noImages: true}}},
         {title: 'My Settings', component: ComingSoon, props: {passProps: {placeholder: 'Hey there, you passProps bro?'}}},
       ],
     };
