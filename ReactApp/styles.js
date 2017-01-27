@@ -42,6 +42,16 @@ module.exports = StyleSheet.create({
   rightAligned: {
     alignItems: 'flex-end',
   },
+  marginLeft: {
+    marginLeft: 18,
+    fontFamily: AppConfig.baseFont,
+    marginBottom: 8,
+    fontWeight: '500',
+    backgroundColor: 'transparent',
+    color: AppConfig.textColor,
+    fontSize: 28,
+    lineHeight: parseInt(AppConfig.baseFontSize + (AppConfig.baseFontSize * 0.5)),
+  },
 
   /* Text Styles */
   baseText: {
@@ -90,6 +100,18 @@ module.exports = StyleSheet.create({
     fontFamily: AppConfig.baseFont,
     fontWeight: '600',
     color: AppConfig.primaryColor,
+    fontSize: AppConfig.baseFontSize * 1.05,
+    lineHeight: parseInt((AppConfig.baseFontSize * 1.1) + (AppConfig.baseFontSize * 0.5)),
+    margin: 0,
+    marginTop: 4,
+    marginBottom: 4,
+    left: 0,
+    right: 0,
+  },
+    h4R: {
+    fontFamily: AppConfig.baseFont,
+    fontWeight: '600',
+    color: '#FF0000',
     fontSize: AppConfig.baseFontSize * 1.05,
     lineHeight: parseInt((AppConfig.baseFontSize * 1.1) + (AppConfig.baseFontSize * 0.5)),
     margin: 0,
