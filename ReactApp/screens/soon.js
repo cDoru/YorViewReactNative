@@ -137,7 +137,26 @@ class ComingSoon extends Component {
     
     this.setState({notifySwitch: value})
   }
- 
+ componentWillMount= () => { 
+
+  if (this.props.profile.profile.userId) {
+    const users = realm.objects('Person');
+    let thisUser = users.filtered('userId CONTAINS[c] $0', this.props.profile.profile.userId);
+    if (thisUser.length) { 
+            console.log(thisUser[0].name +" is logged in.");
+            if (thisUser[0].public === true) {
+              this.setState({publicSwitch: true})
+            }
+            if (thisUser[0].notifications === true) {
+              this.setState({notifySwitch: true})
+            }
+    
+        }
+  }
+
+
+
+ }
 
   /**
     * RENDER

@@ -38,6 +38,7 @@ import Loading from '../components/loading'
 import { getFund } from '../actions/fundamentalOneAct'
 import { getHistorical } from '../actions/getHistorical'
 import {incr, decr} from '../actions/trade'
+import axios from 'axios';
 
 const Realm = require('realm');
 const PersonSchema = {
@@ -68,10 +69,12 @@ const StockSchema = {
 
 const realm2 = new Realm({schema: [FinanceSchema, StockSchema, PersonSchema]});
 const stock = realm2.objects('Stock');
+//lesson learned . . . don't delete this line;
+realm2.write(() => {
+            realm2.create('Stock', {name: 'aapl', cash: 100000, amount: 100});
+            console.log("Created User!");
+        });
 const stockList = stock[0].stocks;
-
-import axios from 'axios';
-
 //[['aapl', 10],['tsla', 100], ['f', 1200], ['tsla',-50]];
 function getTotalValue(arrStocks) {
     var len = arrStocks.length;
@@ -95,23 +98,20 @@ function getTotalValue(arrStocks) {
 }
 
 }
-
 function addStockToRealm(name2, amount2) {
+  console.log(JSON.stringify(stockList));
   let number = Number(amount2);
   realm2.write(() => {
       let result = stockList.push({name: name2, amount: number});
   });
-  getTotalValue(stockList);
 }
 
 function subtractStockFromRealm(name2, amount2) {
+  console.log(JSON.stringify(stockList));
   let number = Number(amount2) * -1;
   realm2.write(() => {
       let result = stockList.push({name: name2, amount: number});
   });
-  
-  getTotalValue(stockList);
-
 }
 
 function mapStateToProps(state) {
@@ -123,12 +123,12 @@ const year = 365
 
 /* Component ==================================================================== */
 class StyleGuide extends Component {
-	static componentName = 'StyleGuide';
-	constructor(props) {
+  static componentName = 'StyleGuide';
+  constructor(props) {
     super(props);
      
     this.state = {
-    	text: '',
+      text: '',
       getFund: 'loading',
       getHis: 'loading',
       chartDone: false,
@@ -254,7 +254,7 @@ getNewData () {
             </View>
         <View style={[AppStyles.hr]}></View>
         <Text style={[AppStyles.p]}><Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}>Price: </Text>{this.props.getFund.stocks.data.quotes.quote.last} <Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}> Eps: </Text> {this.props.getFund.stocks.data.quotes.quote.eps}</Text>
-   	    <View style={[AppStyles.hr]}></View>
+        <View style={[AppStyles.hr]}></View>
         <Text style={[AppStyles.p]}><Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}> High: </Text>{this.props.getFund.stocks.data.quotes.quote.hi} <Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}> Low: </Text> {this.props.getFund.stocks.data.quotes.quote.lo}</Text>
         <View style={[AppStyles.hr]}></View>
         <Text style={[AppStyles.p]}><Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}>Trend:</Text> <Text style={{color: (this.props.getFund.stocks.data.quotes.quote.bidtick === 'd' ? '#FF0000' : '#80FF00')}}> {this.props.getFund.stocks.data.quotes.quote.bidtick === 'd' ? "Down" : "Up"} </Text><Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}> Volume:</Text> {(this.props.getFund.stocks.data.quotes.quote.vl).substring(0,2)} m</Text>
