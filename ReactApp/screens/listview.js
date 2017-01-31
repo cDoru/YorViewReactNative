@@ -7,7 +7,6 @@ import {
     ListView,
     Alert,
     RefreshControl,
-    Slider,
     Text,
 } from 'react-native'
 import { trade,incr,decr } from '../actions/trade'
@@ -66,8 +65,9 @@ class ListViewExample extends Component {
         this.state = {
             dataSource: ds.cloneWithRows(stockList),
             golf: true,
+            hidden: false,
             refreshing: false,
-            securitie: 0,
+            securities: 0,
         };
     }
     static propTypes = {
@@ -137,7 +137,7 @@ class ListViewExample extends Component {
                     if ((data.data.data.quotes.quote.last * eachQuantity) > 1) {
                         price += data.data.data.quotes.quote.last * eachQuantity;
                     }
-                    console.log(data.data.data.quotes.quote)
+                    
                     if(newArr.length === length) {
                         console.log("Final: " +price);
                         that.setState({ dataSource: ds.cloneWithRows(newArr), securities: price, golf: false, refreshing: false});
@@ -153,18 +153,12 @@ class ListViewExample extends Component {
         if (this.state.golf) {
             
         return(
-
-            <Loading text={'Computing Recent Portfolio'} />)}
+            
+            <Loading text={'Loading'} />)}
         else {
             return(
-                <View style = {[AppStyles.container]}>
-                <View style = {{margin: 5}}>
-                <Text style={[AppStyles.p]}> Total: {parseFloat(this.props.trade) + parseFloat(this.state.securities)} </Text>
-                <ProgressBar text={"Profit"} color={"#008000"}  value={Number(59)}/>
-                <ProgressBar text={"Securities"} color={"#FF8000"} value={(parseFloat(this.state.securities) * 175)/10000}/>
-                <ProgressBar text={"Cash"} color={"#0000FF"} value={Number(this.props.trade)/1000}/>
-                </View>
-                <View style = {[AppStyles.hr]}></View>
+
+             <View style = {[AppStyles.container]}>
            <ListView
         style={styles.container}
         dataSource={this.state.dataSource}
@@ -174,15 +168,15 @@ class ListViewExample extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }       
-        renderRow={(data) => <View style={[AppStyles.container], {marginLeft: 30, marginTop: 8}}><Text style={[AppStyles.marginLeft]}>&middot; {(data[0]).toString().toUpperCase()}: ({data[2]} Shares)</Text><View style={[AppStyles.row]}><Text style={parseFloat(data[1]).toFixed(2) < 1 ? [AppStyles.h4R] : [AppStyles.h4G]}>{parseFloat(data[1]).toFixed(2) < 1 ? "Recently Sold" : parseFloat(data[1]).toFixed(2)}</Text></View><View style={styles.separator}></View></View>}
+        renderRow={(data) => <View style={[AppStyles.container], {marginLeft: 20, marginTop: 8}}><Text style={[AppStyles.marginLeft]}>&middot; {(data[0]).toString().toUpperCase()}: ({data[2]} Shares)</Text><View style={[AppStyles.row]}><Text style={parseFloat(data[1]).toFixed(2) < 1 ? [AppStyles.h4R] : [AppStyles.h4G]}>{parseFloat(data[1]).toFixed(2) < 1 ? "Recently Sold" : parseFloat(data[1]).toFixed(2)}</Text></View><View style={styles.separator}></View></View>}
       />
+      
+      
           </View>
             )
         }
     }
 }
-/* Styles ==================================================================== */
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,

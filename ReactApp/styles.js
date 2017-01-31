@@ -16,14 +16,21 @@ module.exports = StyleSheet.create({
 	appContainer: {
     backgroundColor: "#000",
 	},
-
-	/* Default */
 	container: {
     position: 'relative',
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
-  },
+},
+containerB: {
+    position: 'relative',
+    flex: 1,
+    marginTop: 40,
+    flexDirection: 'column',
+    backgroundColor: '#FFFFFF',
+    borderColor: '#CCCCCC',
+    borderWidth: 7,
+},
   containerCentered: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -138,6 +145,15 @@ module.exports = StyleSheet.create({
     fontWeight: '500',
     backgroundColor: 'transparent',
     color: AppConfig.textColor,
+    fontSize: 28,
+    lineHeight: parseInt(AppConfig.baseFontSize + (AppConfig.baseFontSize * 0.5)),
+  },
+  pW: {
+    fontFamily: AppConfig.baseFont,
+    marginBottom: 8,
+    fontWeight: '500',
+    backgroundColor: 'transparent',
+    color: '#FFFFFF',
     fontSize: 28,
     lineHeight: parseInt(AppConfig.baseFontSize + (AppConfig.baseFontSize * 0.5)),
   },

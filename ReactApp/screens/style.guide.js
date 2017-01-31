@@ -215,13 +215,13 @@ getNewData () {
     else {
     return (
 
-      <ScrollView style={{flex:1,backgroundColor:'#F5FCFF'}}          
+      <ScrollView style={{flex:1,backgroundColor:'#FFFFFF'}}          
                   contentContainerStyle={{justifyContent:'center',alignItems:'center'}}>
                 
       <View style={[AppStyles.containerCentered]}>
         <TextInput
           ref="1"
-          style={{height: 45, borderColor: '#808080', borderWidth: .5, marginTop: 10, padding: 15, backgroundColor: '#FFFFFF',borderRadius: 10}}
+          style={{height: 45, width: 300, textAlign: 'left', marginLeft: 40, alignItems: 'center', justifyContent: 'center', padding: 15, borderColor: '#EAEAEA', borderWidth: 0.5, marginTop: 10, backgroundColor: '#EAEAEA',borderRadius: 15}}
           placeholder="Enter Stock Symbol Here"
           returnKeyType="search"
           autoCorrect={false}
@@ -233,33 +233,31 @@ getNewData () {
           onSubmitEditing={() => this.getNewData()}
           blurOnSubmit={true}/>
         <View>
-        <View style={[AppStyles.spacer_30]}></View>
-        <Text style={[AppStyles.h4]}>{this.props.getFund.stocks.data.quotes.quote.name}  ({this.props.getFund.stocks.data.quotes.quote.symbol}) </Text>
-        <View style={[AppStyles.row]}>
-       <TextInput
-          ref="5"
-          style={{height: 45, borderColor: '#808080', borderWidth: .5, marginTop: 10, padding: 15, width: 185,borderRadius: 10}}
-          keyboardType="numeric"
-          onChangeText={(font) => this.setState({font})}
-          placeholder="Enter Quantity Here"
-          returnKeyType="done"
-        />
-        <View style={[AppStyles.paddingHorizontalSml]}></View>
-        <Button
-            text={'Buy'}
-            onPress={this._delAmount} />
-            <View style={[AppStyles.paddingHorizontalSml]}></View>
-             <Button
-            text={'Sell'}
-            onPress={this._changeAmount} />  
+        <View style={[AppStyles.paddingVertical]}></View>
         
-            </View>
-        <View style={[AppStyles.hr]}></View>
+        <Text style={[AppStyles.h4]}>{this.props.getFund.stocks.data.quotes.quote.name}  ({this.props.getFund.stocks.data.quotes.quote.symbol}) </Text>
+         <View style={[AppStyles.hr]}></View>
         <Text style={[AppStyles.p]}><Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}>Price: </Text>{this.props.getFund.stocks.data.quotes.quote.last} <Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}> Eps: </Text> {this.props.getFund.stocks.data.quotes.quote.eps}</Text>
         <View style={[AppStyles.hr]}></View>
         <Text style={[AppStyles.p]}><Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}> High: </Text>{this.props.getFund.stocks.data.quotes.quote.hi} <Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}> Low: </Text> {this.props.getFund.stocks.data.quotes.quote.lo}</Text>
         <View style={[AppStyles.hr]}></View>
         <Text style={[AppStyles.p]}><Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}>Trend:</Text> <Text style={{color: (this.props.getFund.stocks.data.quotes.quote.bidtick === 'd' ? '#FF0000' : '#80FF00')}}> {this.props.getFund.stocks.data.quotes.quote.bidtick === 'd' ? "Down" : "Up"} </Text><Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}> Volume:</Text> {(this.props.getFund.stocks.data.quotes.quote.vl).substring(0,2)} m</Text>
+       <TextInput
+          ref="5"
+          style={{height: 45, width: 300, textAlign: 'left', marginLeft: 20, alignItems: 'center', justifyContent: 'center', padding: 15, borderColor: '#EAEAEA', borderWidth: 0.5, marginTop: 10, backgroundColor: '#EAEAEA',borderRadius: 15}}
+
+          keyboardType="numeric"
+          onChangeText={(font) => this.setState({font})}
+          placeholder="Enter Quantity Here"
+          returnKeyType="done"
+
+        /><View style={[AppStyles.paddingVertical]}><Button
+            text={'Buy'}
+            
+           
+            onPress={this._delAmount} />
+            </View>
+       
         </View> 
 
       <Text style={{fontSize: 17, color: '#808080', fontStyle: 'italic'}}> Year Interval: {year} </Text>

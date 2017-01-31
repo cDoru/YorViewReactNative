@@ -23,7 +23,7 @@ import AppConfig from '../config'
 // // Screens
 import StyleGuide from '../screens/style.guide'
 import ComingSoon from '../screens/soon'              
-import FormExample from '../screens/forms'             
+import Portfolio from '../screens/forms'             
 import ListViewExample from '../screens/listview'      
 import Tabs from '../screens/tabs'                     
 
@@ -42,8 +42,8 @@ class Menu extends Component {
         {title: 'Research', component: StyleGuide},
         {title: 'Connect', component: Tabs}, 
         {title: 'Tips', component: ListViewExample},
-        {title: 'Login', component: FormExample},
-        {title: 'Portfolio', component: ListViewExample, props: {passProps: {noImages: true}}},
+        {title: 'Activity', component: ListViewExample, props: {passProps: {noImages: true}}},
+        {title: 'Portfolio', component: Portfolio},
         {title: 'My Settings', component: ComingSoon, props: {passProps: {placeholder: 'Hey there, you passProps bro?'}}},
       ],
     };

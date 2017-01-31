@@ -31,6 +31,7 @@ import Button from '../components/button'
 
 // Screens
 import StyleGuide from './style.guide'
+import Portfolio from './forms'
 import Home from './soon'
 
 /* Component ==================================================================== */
@@ -49,8 +50,8 @@ class FirstLoad extends Component {
         this.props.close();
 
         this.props.navigator.push({
-            title: 'Home',
-            component: Home,
+            title: 'Portfolio',
+            component: Portfolio,
             index: 1,
         });
     }
@@ -64,13 +65,10 @@ class FirstLoad extends Component {
                 console.log(err);
                 return;
             }
-
+            _navigate();
         });
     }
 
-    /**
-     * RENDER
-     */
     render = () => {
         return(
             <View style={[AppStyles.container, styles.containerCover]}>
@@ -95,7 +93,7 @@ class FirstLoad extends Component {
     }
 }
 
-/* Styles ==================================================================== */
+
 const styles = StyleSheet.create({
     containerCover: {
         marginTop: AppConfig.navbarHeight,
@@ -104,5 +102,5 @@ const styles = StyleSheet.create({
     },
 });
 
-/* Export Component ==================================================================== */
+
 export default FirstLoad
