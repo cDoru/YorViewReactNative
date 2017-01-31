@@ -7,12 +7,16 @@ import {
     ListView,
     Alert,
     RefreshControl,
+    Slider,
     Text,
 } from 'react-native'
+import { trade,incr,decr } from '../actions/trade'
 import AppStyles from '../styles'
+import { connect } from 'react-redux'
 import AppConfig from '../config'
 import AppUtil from '../util'
 import Loading from '../components/loading'
+import ProgressBar from '../components/ProgressBar'
 import ListRow from '../components/list.row'
 import Screen from './soon'
 import axios from 'axios'
@@ -48,6 +52,10 @@ const StockSchema = {
 const realm2 = new Realm({ schema: [FinanceSchema, StockSchema, PersonSchema] });
 const stock = realm2.objects('Stock');
 let stockList = stock[0].stocks;
+
+ function mapStateToProps(state) {
+  return { trade: state.tradeReducer };
+}
 class ListViewExample extends Component {
     static componentName = 'ListViewExample';
     constructor(props) {
@@ -59,16 +67,18 @@ class ListViewExample extends Component {
             dataSource: ds.cloneWithRows(stockList),
             golf: true,
             refreshing: false,
+            securitie: 0,
         };
     }
     static propTypes = {
         navigator: React.PropTypes.object.isRequired,
     }
+   
     componentWillMount = () => {
         var that = this;
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         var newArr = [];
-
+        let price = 0;
         function getPrice(arr) {
             console.log(arr);
             var obj = {};
@@ -86,10 +96,13 @@ class ListViewExample extends Component {
                 var eachQuantity = obj[Object.keys(obj)[thing]];
                 axios.get('https://yorview.herokuapp.com/api/fundamentals/' + eachStockName).then(function(data) {
                     newArr.push([data.data.data.quotes.quote.symbol, data.data.data.quotes.quote.last * eachQuantity, Number(arr[thing].amount)]);
-
+                    if ((data.data.data.quotes.quote.last * eachQuantity) > 1) {
+                        price += data.data.data.quotes.quote.last * eachQuantity;
+                    }
                     if(newArr.length === length) {
-                        console.log(newArr);
-                        that.setState({ dataSource: ds.cloneWithRows(newArr), golf: false, refreshing: false });
+                        console.log("Final: " +price);
+                        //console.log(newArr);
+                        that.setState({ dataSource: ds.cloneWithRows(newArr), securities: price, golf: false, refreshing: false });
                     }
                 });
 
@@ -103,7 +116,7 @@ class ListViewExample extends Component {
         var that = this;
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         var newArr = [];
-
+        let price = 0;
         function getPrice(arr) {
             console.log(arr);
             var obj = {};
@@ -121,10 +134,13 @@ class ListViewExample extends Component {
                 var eachQuantity = obj[Object.keys(obj)[thing]];
                 axios.get('https://yorview.herokuapp.com/api/fundamentals/' + eachStockName).then(function(data) {
                     newArr.push([data.data.data.quotes.quote.symbol, data.data.data.quotes.quote.last * eachQuantity]);
+                    if ((data.data.data.quotes.quote.last * eachQuantity) > 1) {
+                        price += data.data.data.quotes.quote.last * eachQuantity;
+                    }
                     console.log(data.data.data.quotes.quote)
                     if(newArr.length === length) {
-                        console.log(newArr);
-                        that.setState({ dataSource: ds.cloneWithRows(newArr), golf: false });
+                        console.log("Final: " +price);
+                        that.setState({ dataSource: ds.cloneWithRows(newArr), securities: price, golf: false, refreshing: false});
                     }
                 });
 
@@ -135,11 +151,20 @@ class ListViewExample extends Component {
     }
     render = () => {
         if (this.state.golf) {
+            
         return(
+
             <Loading text={'Computing Recent Portfolio'} />)}
         else {
             return(
                 <View style = {[AppStyles.container]}>
+                <View style = {{margin: 5}}>
+                <Text style={[AppStyles.p]}> Total: {parseFloat(this.props.trade) + parseFloat(this.state.securities)} </Text>
+                <ProgressBar text={"Profit"} color={"#008000"}  value={Number(59)}/>
+                <ProgressBar text={"Securities"} color={"#FF8000"} value={(parseFloat(this.state.securities) * 175)/10000}/>
+                <ProgressBar text={"Cash"} color={"#0000FF"} value={Number(this.props.trade)/1000}/>
+                </View>
+                <View style = {[AppStyles.hr]}></View>
            <ListView
         style={styles.container}
         dataSource={this.state.dataSource}
@@ -149,7 +174,7 @@ class ListViewExample extends Component {
             onRefresh={this._onRefresh.bind(this)}
           />
         }       
-        renderRow={(data) => <View style={[AppStyles.container], {marginLeft: 30, marginTop: 8}}><Text style={[AppStyles.marginLeft]}>{(data[0]).toString().toUpperCase()}: ({data[2]} Shares)</Text><View style={[AppStyles.row]}><Text style={parseFloat(data[1]).toFixed(2) < 1 ? [AppStyles.h4R] : [AppStyles.h4G]}>{parseFloat(data[1]).toFixed(2) < 1 ? "Recently Sold" : parseFloat(data[1]).toFixed(2)}</Text></View><View style={styles.separator}></View></View>}
+        renderRow={(data) => <View style={[AppStyles.container], {marginLeft: 30, marginTop: 8}}><Text style={[AppStyles.marginLeft]}>&middot; {(data[0]).toString().toUpperCase()}: ({data[2]} Shares)</Text><View style={[AppStyles.row]}><Text style={parseFloat(data[1]).toFixed(2) < 1 ? [AppStyles.h4R] : [AppStyles.h4G]}>{parseFloat(data[1]).toFixed(2) < 1 ? "Recently Sold" : parseFloat(data[1]).toFixed(2)}</Text></View><View style={styles.separator}></View></View>}
       />
           </View>
             )
@@ -163,6 +188,10 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 20,
     },
+    progressView: {
+        height: 5,
+        width: 150,
+    },
     separator: {
         flex: 1,
         height: 1,
@@ -171,4 +200,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ListViewExample;
+export default connect(mapStateToProps)(ListViewExample)
