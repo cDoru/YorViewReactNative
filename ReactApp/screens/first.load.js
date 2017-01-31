@@ -9,11 +9,12 @@
 /* Setup ==================================================================== */
 import React, { Component } from 'react'
 import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  StatusBar,
+    StyleSheet,
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    StatusBar,
 } from 'react-native'
 
 
@@ -34,72 +35,73 @@ import Home from './soon'
 
 /* Component ==================================================================== */
 class FirstLoad extends Component {
-  static componentName = 'FirstLoad';
+    static componentName = 'FirstLoad';
 
-  static propTypes = {
-    navigator: React.PropTypes.object.isRequired,
-    close: React.PropTypes.func.isRequired,
-  }
+    static propTypes = {
+        navigator: React.PropTypes.object.isRequired,
+        close: React.PropTypes.func.isRequired,
+    }
 
-	/**
-	  * Navigates to Sign Up
-	  */
-	_navigate = () => {
-    this.props.close();
+    /**
+     * Navigates to Sign Up
+     */
+    _navigate = () => {
+        this.props.close();
 
-	  this.props.navigator.push({
-	    title: 'Home',
-	    component: Home,
-	    index: 1,
-	  });
-	}
+        this.props.navigator.push({
+            title: 'Home',
+            component: Home,
+            index: 1,
+        });
+    }
 
-  _onLogin = () => {
+    _onLogin = () => {
 
-    lock.show({
-      closable: true,
-    }, (err, profile, token) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-        
-    });
-  }
+        lock.show({
+            closable: true,
+        }, (err, profile, token) => {
+            if(err) {
+                console.log(err);
+                return;
+            }
 
-  /**
-    * RENDER
-    */
-  render = () => {
-    return (
-      <View style={[AppStyles.container, styles.containerCover]}>
-      	<View style={[AppStyles.paddingHorizontal]}>
+        });
+    }
+
+    /**
+     * RENDER
+     */
+    render = () => {
+        return(
+            <View style={[AppStyles.container, styles.containerCover]}>
+        <View style={[AppStyles.paddingHorizontal]}>
           <Text style={[AppStyles.baseText, AppStyles.p, AppStyles.centered]}>
             Welcome to YorView!
           </Text>
-
-          <View style={[AppStyles.spacer_10]} />
+        
+          
 
           <View style={[AppStyles.row]}>
-          	 <Button
-                text={'Login'}
-                type={'outlined'}
-                onPress={this._navigate} />
             
-      		</View>
-      	</View>
+            <Image
+          style={{width: 150, height: 150}}
+          source={require('../images/YorViewLogo.png')}
+        />
+         
+          </View>
+        </View>
       </View>
-    );
-  }
+        );
+    }
 }
 
 /* Styles ==================================================================== */
 const styles = StyleSheet.create({
-	containerCover: {
-		marginTop: AppConfig.navbarHeight,
-		backgroundColor: "#FFF",
-		justifyContent: 'center',
-	},
+    containerCover: {
+        marginTop: AppConfig.navbarHeight,
+        backgroundColor: "#FFF",
+        justifyContent: 'center',
+    },
 });
 
 /* Export Component ==================================================================== */

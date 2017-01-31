@@ -65,7 +65,8 @@ class Menu extends Component {
     menu.map((item)=>{
       let { title, component, props } = item;
 
-      menuItems.push(
+      menuItems.push
+(
         <TouchableOpacity key={'menu-item-'+title}
           onPress={()=>navigate(title, component, props)}>
           <View style={[styles.menuItem]}>

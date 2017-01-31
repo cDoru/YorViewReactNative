@@ -120,6 +120,18 @@ module.exports = StyleSheet.create({
     left: 0,
     right: 0,
   },
+  h4G: {
+    fontFamily: AppConfig.baseFont,
+    fontWeight: '600',
+    color: '#008000',
+    fontSize: AppConfig.baseFontSize * 1.05,
+    lineHeight: parseInt((AppConfig.baseFontSize * 1.1) + (AppConfig.baseFontSize * 0.5)),
+    margin: 0,
+    marginTop: 4,
+    marginBottom: 4,
+    left: 0,
+    right: 0,
+  },
   p: {
     fontFamily: AppConfig.baseFont,
     marginBottom: 8,

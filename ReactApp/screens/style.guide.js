@@ -18,6 +18,7 @@ import {
   ScrollView,
   TextInput,
   Alert,
+  Vibration,
   AsyncStorage,
 } from 'react-native'
 
@@ -151,13 +152,14 @@ componentDidMount = async () => {
     this.props.close();   
   }
  _changeAmount = () => {
+    Vibration.vibrate();
     subtractStockFromRealm(this.props.getFund.stocks.data.quotes.quote.symbol, this.state.font)
     let adding = Math.round(this.state.font) * this.props.getFund.stocks.data.quotes.quote.last - 0.95;
     this.props.dispatch(incr(adding)); 
     Alert.alert("You have sold " +this.state.font +" stocks for $" +adding.toFixed(2));
   }
   _delAmount = () => {
-
+    Vibration.vibrate()
     addStockToRealm(this.props.getFund.stocks.data.quotes.quote.symbol, this.state.font);
     let subtract = Math.round(this.state.font) * this.props.getFund.stocks.data.quotes.quote.last + 0.95;
     this.props.dispatch(decr(subtract));
