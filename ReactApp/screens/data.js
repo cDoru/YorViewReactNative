@@ -16,31 +16,31 @@ export default sampleData = {
             color: '#008000',
             axisX: {
                 showAxis: false,
-                showLines: true,
-                showLabels: true,
-                showTicks: true,
+                showLines: false,
+                showLabels: false,
+                showTicks: false,
                 zeroAxis: false,
-                showDataPoint: true,
+                showDataPoint: false,
                 orient: 'top',
                 label: {
                     fontFamily: 'Arial',
                     fontSize: 14,
-                    fontWeight: true,
+                    fontWeight: false,
                     fill: '#000000'
                 }
             },
             axisY: {
-                showAxis: true,
-                showLines: true,
-                showLabels: true,
-                showTicks: true,
-                showDataPoint: true,
+                showAxis: false,
+                showLines: false,
+                showLabels: false,
+                showTicks: false,
+                showDataPoint: false,
                 zeroAxis: false,
                 orient: 'left',
                 label: {
                     fontFamily: 'Arial',
                     fontSize: 16,
-                    fontWeight: true,
+                    fontWeight: false,
                     fill: 'black'
                 }
             }

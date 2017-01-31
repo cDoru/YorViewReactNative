@@ -131,6 +131,7 @@ class Tabs extends Component {
     this.state = {
       text: '',
       getFund: 'loading',
+      news: [],
       getHis: 'loading',
       chartDone: false,
       loading: true,
@@ -148,21 +149,28 @@ class Tabs extends Component {
   }
 
   componentDidMount = async () => {
-   
+    var that = this;
      let response = await AsyncStorage.getItem('pastStock');
     if (response) {
       
       this.props.dispatch(getFund(response));
       this.props.dispatch(getHistorical(response, year));
+       axios.get('https://yorview.herokuapp.com/api/news/' +response).then(function(data) {
+            that.setState({news: data.data.data.articles.article})
+        });
 
     }
     else {
     this.props.dispatch(getFund('aapl'));
     this.props.dispatch(getHistorical('aapl', year));
+     axios.get('https://yorview.herokuapp.com/api/news/aapl').then(function(data) {
+            that.setState({news: data.data.data.articles.article})
+        });
   }
    InteractionManager.runAfterInteractions(() => {
       this.setState({ loading: false });
     })
+  
   }
 
   /**
@@ -192,12 +200,16 @@ class Tabs extends Component {
     Alert.alert("You have bought " +this.state.font +" stocks for $" +subtract.toFixed(2));
   }
 getNewData () {
+  var that = this;
   var stock = this.state.text.trim();
   if (stock !== '') {
   AsyncStorage.setItem('pastStock', stock);
   this.props.dispatch(getFund(stock));
   this.props.dispatch(getHistorical(stock, year));
   this.setState({text: ''})
+   axios.get('https://yorview.herokuapp.com/api/news/' +stock).then(function(data) {
+            that.setState({news: data.data.data.articles.article})
+        });
 }
 }
   _renderHeader = (props) => {
@@ -305,20 +317,59 @@ getNewData () {
       case '2':
         return (
         	<View style={AppStyles.containerCentered}>
+          <View style={[AppStyles.paddingVertical]}></View>
+          <View style={[AppStyles.paddingVertical]}></View>
+          <Text style={[AppStyles.h4]}>{this.props.getFund.stocks.data.quotes.quote.name} </Text>
+          
+          <Text style={[AppStyles.h4B]}>Last Price: {this.props.getFund.stocks.data.quotes.quote.last}</Text>
+          
+          <Text style={[AppStyles.h4B]}>Time period: {year} days</Text>
+          
+          <View style={[AppStyles.paddingVertical]}></View>
+          <View style={[AppStyles.paddingVerticalSml]}></View>
+
          {stockLine}
+         <Text style={{color: "darkgray", fontSize: 11, textAlign: 'center'}}> Data provided by TradeKing and Quandl. </Text>
           </View>
         );
       case '3':
         return (
-        	<View style={AppStyles.windowSize}>
-           
+        <ScrollView>
+        	<View style={{margin: 10}}>
+            {this.state.news.map((article) => <View key={article.id}><Text style={[AppStyles.p]} key={article.id}>&middot; {article.headline}</Text><View style={[AppStyles.hr]}></View></View>)}
           </View>
+          </ScrollView>
         );
       case '4':
         return (
         	<View style={AppStyles.windowSize}>
-            <ListView
-              navigator={this.props.navigator} />
+          <View style={{margin: 30}}>
+          <Text style={[AppStyles.h4]}>{this.props.getFund.stocks.data.quotes.quote.name} </Text>
+          <View style={[AppStyles.paddingVertical]}></View>
+          <Text style={[AppStyles.h4B]}>Last Price: {this.props.getFund.stocks.data.quotes.quote.last}</Text>
+          <Text style={[AppStyles.h4B]}>High: {this.props.getFund.stocks.data.quotes.quote.hi} </Text>
+          </View>
+            <TextInput
+          ref="5"
+          style={{height: 45, width: 300, textAlign: 'left', marginLeft: 20, alignItems: 'center', justifyContent: 'center', padding: 15, borderColor: '#EAEAEA', borderWidth: 0.5, marginTop: 10, backgroundColor: '#EAEAEA',borderRadius: 15}}
+
+          keyboardType="numeric"
+          onChangeText={(font) => this.setState({font})}
+          placeholder="Enter Quantity Here"
+          returnKeyType="done"
+
+        /><View style={[AppStyles.paddingVertical]}><Button
+            text={'Buy'}
+            
+           
+            onPress={this._delAmount} />
+            </View>
+            <View style={[AppStyles.paddingVertical]}><Button
+            text={'Sell'}
+            
+           
+            onPress={this._changeAmount} />
+            </View>
           </View>
         );
       default:

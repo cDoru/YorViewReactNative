@@ -39,8 +39,8 @@ class Menu extends Component {
     // Initial state
     this.state = {
       menu: [
-        {title: 'Research', component: StyleGuide},
-        {title: 'Connect', component: Tabs}, 
+        {title: 'Connect', component: StyleGuide},
+        {title: 'Research', component: Tabs}, 
         {title: 'Tips', component: ListViewExample},
         {title: 'Activity', component: ListViewExample, props: {passProps: {noImages: true}}},
         {title: 'Portfolio', component: Portfolio},
