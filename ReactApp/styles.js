@@ -245,7 +245,7 @@ containerB: {
     borderBottomColor: AppConfig.borderColor,
     height: 1,
     backgroundColor: 'transparent',
-    marginTop: 20,
+    marginTop: 15,
     marginBottom: 20,
   },
   spacer_5: {

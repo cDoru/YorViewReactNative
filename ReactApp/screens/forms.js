@@ -164,7 +164,7 @@ class Portfolio extends Component {
             let options = {
                 margin: {
                     top: 30,
-                    left: 40,
+                    left: 60,
                     right: 0
                 },
                 width: 350,
@@ -196,7 +196,7 @@ class Portfolio extends Component {
             ]}
           options={options}
           accessorKey="value"
-          margin={{top: 20, left: 50}}
+          margin={{top: 20, left: 60}}
           color="#2980B9"
           pallete={
             [

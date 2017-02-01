@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   menuItem_text: {
-    fontSize: 18,
+    fontSize: 17,
     lineHeight: parseInt(18 + (18 * 0.5)),
     fontWeight: '500',
     marginTop: 10,
