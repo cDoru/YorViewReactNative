@@ -1,10 +1,12 @@
 # YorView: 
-### A React Native App that Helps Those Interested In Investing Learn From Others, Theirs Successes, and Their Mistake
+### A React Native App that Helps Those Interested In Investing Learn From Others, Theirs Successes, and Their Mistakes
 
 ### About
+
 This app is an exploration of "machine learning", react native, redux, realm, express, Go, and AWS.
 The app provides a "safe copy" of stock trading and investing. 
 
+You can see what works well for other people, look for tips and recommendations based on your trading style, and keep track of your portfolio in real-time.
 
 ## Installation
 To use the app:
